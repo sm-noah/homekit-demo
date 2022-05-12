@@ -8,7 +8,9 @@ import kitchenHomepodImage from "./images/Kitchen - Homepod.png";
 import kitchenLightImage from "./images/Kitchen - Lights.png";
 import livingHomepodImage from "./images/Living - Homepod.png";
 import livingLightImage from "./images/Living - Lights.png";
+import livingLightBlindsImage from "./images/Living - Lights - Blinds.png";
 import livingTVImage from "./images/Living - TV.png";
+import livingBlindsImage from "./images/Living - Blinds.png";
 import thermostatOnImage from "./images/Thermostat - On.png";
 import thermostatOffImage from "./images/Thermostat - Off.png";
 import ventImage from "./images/Vent.png";
@@ -79,18 +81,24 @@ function App() {
     },
     {
       name: "livingHomepod",
-      style: { left: 915, top: 376.5, width: 119, height: 77, zIndex: 3, },
+      style: { left: 915, top: 376.5, width: 119, height: 77, zIndex: 4, },
       image: livingHomepodImage
     },
     {
       name: "livingLight",
-      style: { left: 757, top: 190, width: 212, height: 252, zIndex: 1, },
-      image: livingLightImage
+      style: { left: 757, top: 190, width: 212, height: 252, zIndex: 2, },
+      image: (state) => state['livingBlinds'] ? livingLightBlindsImage : livingLightImage,
+      imageDynamic: true
     },
     {
       name: "livingTV",
-      style: { left: 849, top: 280, width: 237, height: 236, zIndex: 2 },
+      style: { left: 849, top: 280, width: 237, height: 236, zIndex: 3 },
       image: livingTVImage
+    },
+    {
+      name: "livingBlinds",
+      style: { left: 793, top: 201, width: 271, height: 145, zIndex: 0, },
+      image: livingBlindsImage,
     },
   ];
 
@@ -114,14 +122,14 @@ function App() {
       <div className="relative">
         <img src={roomImage} alt="room" style={{ width: 1383, height: 949 }} />
         {items.map((item, key) => (
-          <div
-            key={key}
-            className="absolute cursor-pointer group"
-            style={item.style}
-            onClick={!item.isStatic ? () => toggle(item) : null}
-          >
-            <img src={item.image} alt={item.name} className={`${isOn[item.name] || item.isStatic ? "opacity-100" : `${item.isHidden ? "opacity-0" : "opacity-0 group-hover:opacity-25 transition duration-200"}`}`} width="100%" />
-          </div>
+            <div
+              key={key}
+              className="absolute cursor-pointer group"
+              style={item.style}
+              onClick={!item.isStatic ? () => toggle(item) : null}
+            >
+              <img src={item.imageDynamic ? item.image(isOn) : item.image} alt={item.name} className={`${isOn[item.name] || item.isStatic ? "opacity-100" : `${item.isHidden ? "opacity-0" : "opacity-0 group-hover:opacity-25 transition duration-200"}`}`} width="100%" />
+            </div>
         ))}
       </div>
     </div>
