@@ -81,7 +81,8 @@ function App() {
     },
     {
       name: "livingHomepod",
-      style: { left: 915, top: 376.5, width: 119, height: 77, zIndex: 4, },
+      style: (state) => ({ left: 915, top: 376.5, width: 119, height: 77, zIndex: 4, opacity: state['livingTV'] ? 0.5 : 1 }),
+      styleDynamic: true,
       image: livingHomepodImage
     },
     {
@@ -125,7 +126,7 @@ function App() {
             <div
               key={key}
               className="absolute cursor-pointer group"
-              style={item.style}
+              style={item.styleDynamic ? item.style(isOn) : item.style}
               onClick={!item.isStatic ? () => toggle(item) : null}
             >
               <img src={item.imageDynamic ? item.image(isOn) : item.image} alt={item.name} className={`${isOn[item.name] || item.isStatic ? "opacity-100" : `${item.isHidden ? "opacity-0" : "opacity-0 group-hover:opacity-25 transition duration-200"}`}`} width="100%" />
